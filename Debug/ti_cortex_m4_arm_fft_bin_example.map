@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker Unix v5.1.10                   
 ******************************************************************************
->> Linked Thu Apr  9 16:54:59 2015
+>> Linked Sun Apr 12 17:41:34 2015
 
 OUTPUT FILE NAME:   <ti_cortex_m4_arm_fft_bin_example.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 00014d55

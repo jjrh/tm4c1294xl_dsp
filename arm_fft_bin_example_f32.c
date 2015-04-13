@@ -109,7 +109,7 @@
 #include "inc/hw_memmap.h"
 #include "inc/tm4c1294ncpdt.h"
 
-#define TEST_LENGTH_SAMPLES 512
+#define TEST_LENGTH_SAMPLES 256
 
 // Rate to sample analog input
 #define SAMPLING_RATE 44100
@@ -128,7 +128,7 @@ void ADC0_SampleHandler();
 //extern float32_t testInput_f32_44khz_256[TEST_LENGTH_SAMPLES];
 
 uint32_t inputIndex;
-float32_t inputData[TEST_LENGTH_SAMPLES];
+float32_t inputData[2];
 
 static float32_t rfftOutput[TEST_LENGTH_SAMPLES];
 static float32_t testOutput_44khz[TEST_LENGTH_SAMPLES/2];
@@ -288,9 +288,6 @@ void runFFT()
 	// Run FFT
 //	ROM_TimerEnable(TIMER0_BASE, TIMER_A);
 //	startTime = TIMER0_TAR_R;
-
-	/* Process the data through the CFFT/CIFFT module */
-	//arm_cfft_f32(&arm_cfft_sR_f32_len256, inputComplex, ifftFlag, doBitReverse);
 
 	/* Process the real data through the RFFT module */
 	arm_rfft_fast_f32(&fft, inputData, rfftOutput, ifftFlag);
