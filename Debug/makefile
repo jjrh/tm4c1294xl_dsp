@@ -9,6 +9,7 @@ $(GEN_CMDS__FLAG) \
 "./arm_fft_bin_data.obj" \
 "./arm_fft_bin_example_f32.obj" \
 "./tm4c1294ncpdt_startup_ccs.obj" \
+"./uartstdio.obj" \
 "../tm4c1294ncpdt.cmd" \
 -l"libc.a" \
 -l/home/keith/arm/CMSIS/Lib/CCS/M4/dsplib-cm4f.lib \
@@ -141,8 +142,8 @@ ti_cortex_m4_arm_fft_bin_example.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "arm_fft_bin_data.pp" "arm_fft_bin_example_f32.pp" "tm4c1294ncpdt_startup_ccs.pp" 
-	-$(RM) "arm_fft_bin_data.obj" "arm_fft_bin_example_f32.obj" "tm4c1294ncpdt_startup_ccs.obj" 
+	-$(RM) "arm_fft_bin_data.pp" "arm_fft_bin_example_f32.pp" "tm4c1294ncpdt_startup_ccs.pp" "uartstdio.pp" 
+	-$(RM) "arm_fft_bin_data.obj" "arm_fft_bin_example_f32.obj" "tm4c1294ncpdt_startup_ccs.obj" "uartstdio.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

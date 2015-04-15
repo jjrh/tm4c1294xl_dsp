@@ -18,6 +18,7 @@ arm_fft_bin_example_f32.obj: /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/incl
 arm_fft_bin_example_f32.obj: /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/ymath.h
 arm_fft_bin_example_f32.obj: /home/keith/arm/CMSIS/Include/arm_const_structs.h
 arm_fft_bin_example_f32.obj: /home/keith/arm/CMSIS/Include/arm_common_tables.h
+arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/pin_map.h
 arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/rom.h
 arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/rom_map.h
 arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/sysctl.h
@@ -26,6 +27,9 @@ arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/dri
 arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/gpio.h
 arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/inc/hw_memmap.h
 arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/inc/tm4c1294ncpdt.h
+arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/uart.h
+arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/utils/uartstdio.h
+arm_fft_bin_example_f32.obj: /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/stdarg.h
 
 ../arm_fft_bin_example_f32.c: 
 /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/stdbool.h: 
@@ -45,6 +49,7 @@ arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/inc
 /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/ymath.h: 
 /home/keith/arm/CMSIS/Include/arm_const_structs.h: 
 /home/keith/arm/CMSIS/Include/arm_common_tables.h: 
+/home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/pin_map.h: 
 /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/rom.h: 
 /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/rom_map.h: 
 /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/sysctl.h: 
@@ -53,3 +58,6 @@ arm_fft_bin_example_f32.obj: /home/keith/Documents/School/TCES\ 430/TivaWare/inc
 /home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/gpio.h: 
 /home/keith/Documents/School/TCES\ 430/TivaWare/inc/hw_memmap.h: 
 /home/keith/Documents/School/TCES\ 430/TivaWare/inc/tm4c1294ncpdt.h: 
+/home/keith/Documents/School/TCES\ 430/TivaWare/driverlib/uart.h: 
+/home/keith/Documents/School/TCES\ 430/TivaWare/utils/uartstdio.h: 
+/home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/stdarg.h: 

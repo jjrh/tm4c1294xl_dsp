@@ -43,6 +43,7 @@
 #include "arm_math.h"
 #include "arm_const_structs.h"
 
+#include "driverlib/pin_map.h"
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
 #include "driverlib/sysctl.h"
@@ -52,6 +53,8 @@
 #include "inc/hw_memmap.h"
 #include "inc/tm4c1294ncpdt.h"
 
+#include "driverlib/uart.h"
+#include "utils/uartstdio.h"
 
 /*
  * Constants
@@ -63,18 +66,27 @@
 // Rate to sample input
 #define SAMPLING_RATE 44100
 
+// Number of frequencies to use for testing
+#define NUM_FREQS 4
+
 /*
  * Forward declaration of functions
  */
-
 void configureADC();
 void runFFT();
 void TIMER1_Handler();
 void ADC0_SampleHandler();
+void ConfigureUART();
+int freqIndex(int);
 
 /*
  *  Global variables
  */
+
+// Frequencies to check
+uint32_t freqs[NUM_FREQS] = { 1000, 2000, 3000, 4000 };
+
+
 // Pointer to where the next sample should
 // go in the input buffer.
 uint32_t inputIndex;
@@ -106,6 +118,7 @@ static float32_t magOutput[NUM_SAMPLES/2];
 
 // Used to retrieve data from ADC sequencer
 uint32_t adc_value[1];
+
 
 /* ------------------------------------------------------------------
  * Global variable for system clock
@@ -139,11 +152,17 @@ int32_t main(void)
 	MAP_FPULazyStackingEnable();
 	MAP_FPUEnable();
 
+	// Initialize the UART and write status.
+	ConfigureUART();
+
+	UARTprintf("\033[2JFFT Test\n");
+
 	// Initialize input buffer index for FFT data
 	inputIndex = 0;
 
 	// Set up ADC sampling and interrupt
 	configureADC();
+
 
 	while(1);                             /* main function does not return */
 }
@@ -164,6 +183,9 @@ void configureADC()
 	// Configure GPIO Pin for ADC
 	MAP_GPIOPinTypeADC(GPIO_PORTD_BASE, GPIO_PIN_7);
 
+	// TODO: Used for measuring timing, can be removed later
+    MAP_GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, GPIO_PIN_3);
+    MAP_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_3, 0);
 
 	/*
 	 * Configure timer for ADC triggering
@@ -212,6 +234,9 @@ void configureADC()
 
 void ADC0_SampleHandler()
 {
+	// Turn on debuggin signal
+	MAP_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_3, GPIO_PIN_3);
+
 	// Clear interrupt signal in ADC
 	MAP_ADCIntClear(ADC0_BASE, 3);
 
@@ -234,14 +259,19 @@ void ADC0_SampleHandler()
 		// Run the transform
 		runFFT();
 
+		// Turn off debuggin signal (before 1 sec delay!)
+		MAP_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_3, 0);
+
 		// Delay for 1 second
 		MAP_SysCtlDelay(g_ui32SysClock / 3);
 
 		//Re-enable timer and ADC interrupts to run another FFT
 		MAP_ADCIntEnable(ADC0_BASE, 3);
 		MAP_TimerEnable(TIMER1_BASE, TIMER_A);
-	}
 
+	}
+	// Turn off debuggin signal
+	MAP_GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_3, 0);
 }
 
 void runFFT()
@@ -251,16 +281,16 @@ void runFFT()
 
 	// Setup testing timer
 	// TODO: This is just used for timing testing
-//	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-//	ROM_TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
-//	ROM_TimerLoadSet(TIMER0_BASE, TIMER_A, g_ui32SysClock); // 1 second
+	//	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+	//	ROM_TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+	//	ROM_TimerLoadSet(TIMER0_BASE, TIMER_A, g_ui32SysClock); // 1 second
 
 	// Create a RFFT instance
 	arm_rfft_fast_instance_f32 fft;
 	arm_rfft_fast_init_f32(&fft,NUM_SAMPLES);
 
-//	ROM_TimerEnable(TIMER0_BASE, TIMER_A);
-//	startTime = TIMER0_TAR_R;
+	//	ROM_TimerEnable(TIMER0_BASE, TIMER_A);
+	//	startTime = TIMER0_TAR_R;
 
 	// Run the FFT
 
@@ -279,12 +309,64 @@ void runFFT()
 	/* Calculates maxValue and returns corresponding BIN value */
 	arm_max_f32(magOutput, NUM_SAMPLES / 2, &maxValue, &peakBucket);
 
-//	stopTime = TIMER0_TAR_R;
-//	totalTime = startTime - stopTime;
-//	int totalTimeUs = totalTime / 120;
+	//	stopTime = TIMER0_TAR_R;
+	//	totalTime = startTime - stopTime;
+	//	int totalTimeUs = totalTime / 120;
 
 	// Convert peak frequency bucket number to frequency
 	int peakFrequency = peakBucket * SAMPLING_RATE / NUM_SAMPLES;
 
+	int i;
+	for (i = 0; i < NUM_FREQS; i++)
+	{
+		// Print each frequency (closest bucket) and its magnitude
+		// Note: Print output is cast to integer due to restrictions in UARTprintf function
+		//UARTprintf("%d Hz: %d\n", freqs[i], (int) magOutput[freqIndex(freqs[i])]);
+
+	}
+	//UARTprintf("\n\n");
+
+
 	MAP_SysCtlDelay(1); // Only used to get a breakpoint in debugger
+}
+
+// Returns the magnitude output buffer index for a
+// given frequency in Hz
+int freqIndex(int freq)
+{
+	// This is based on buckets frequency range being
+	// CENTERED on n*bucketSize.
+	float bucketSize = SAMPLING_RATE / ((float) NUM_SAMPLES);
+
+	return (int)( (freq + (bucketSize/2) ) / bucketSize);
+}
+//*****************************************************************************
+//
+// Configure the UART and its pins.  This must be called before UARTprintf().
+//
+//*****************************************************************************
+void
+ConfigureUART(void)
+{
+	//
+	// Enable the GPIO Peripheral used by the UART.
+	//
+	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+
+	//
+	// Enable UART0.
+	//
+	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+
+	//
+	// Configure GPIO Pins for UART mode.
+	//
+	ROM_GPIOPinConfigure(GPIO_PA0_U0RX);
+	ROM_GPIOPinConfigure(GPIO_PA1_U0TX);
+	ROM_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+
+	//
+	// Initialize the UART for console I/O.
+	//
+	UARTStdioConfig(0, 115200, g_ui32SysClock);
 }
