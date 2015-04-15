@@ -7,8 +7,8 @@ CMD_SRCS += \
 ../tm4c1294ncpdt.cmd 
 
 C_SRCS += \
-/home/keith/arm/CMSIS/DSP_Lib/Examples/arm_fft_bin_example/ARM/arm_fft_bin_data.c \
-/home/keith/arm/CMSIS/DSP_Lib/Examples/arm_fft_bin_example/ARM/arm_fft_bin_example_f32.c \
+../arm_fft_bin_data.c \
+../arm_fft_bin_example_f32.c \
 ../tm4c1294ncpdt_startup_ccs.c 
 
 OBJS += \
@@ -32,8 +32,8 @@ OBJS__QUOTED += \
 "tm4c1294ncpdt_startup_ccs.obj" 
 
 C_SRCS__QUOTED += \
-"/home/keith/arm/CMSIS/DSP_Lib/Examples/arm_fft_bin_example/ARM/arm_fft_bin_data.c" \
-"/home/keith/arm/CMSIS/DSP_Lib/Examples/arm_fft_bin_example/ARM/arm_fft_bin_example_f32.c" \
+"../arm_fft_bin_data.c" \
+"../arm_fft_bin_example_f32.c" \
 "../tm4c1294ncpdt_startup_ccs.c" 
 
 

@@ -1,6 +1,6 @@
 # FIXED
 
-arm_fft_bin_data.obj: /home/keith/arm/CMSIS/DSP_Lib/Examples/arm_fft_bin_example/ARM/arm_fft_bin_data.c
+arm_fft_bin_data.obj: ../arm_fft_bin_data.c
 arm_fft_bin_data.obj: /home/keith/arm/CMSIS/Include/arm_math.h
 arm_fft_bin_data.obj: /home/keith/arm/CMSIS/Include/core_cm4.h
 arm_fft_bin_data.obj: /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/stdint.h
@@ -16,7 +16,7 @@ arm_fft_bin_data.obj: /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/yva
 arm_fft_bin_data.obj: /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/stdarg.h
 arm_fft_bin_data.obj: /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/_lock.h
 
-/home/keith/arm/CMSIS/DSP_Lib/Examples/arm_fft_bin_example/ARM/arm_fft_bin_data.c: 
+../arm_fft_bin_data.c: 
 /home/keith/arm/CMSIS/Include/arm_math.h: 
 /home/keith/arm/CMSIS/Include/core_cm4.h: 
 /home/keith/ti/ccsv6/tools/compiler/arm_5.1.10/include/stdint.h: 
